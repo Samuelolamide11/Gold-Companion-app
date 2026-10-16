@@ -10,8 +10,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -39,11 +39,6 @@
             color: #e2e8f0;
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
-        .gold-gradient-text {
-            background: linear-gradient(135deg, #f3ba2f 0%, #ffe89a 50%, #d49511 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
         .gold-border-glow {
             box-shadow: 0 0 15px rgba(243, 186, 47, 0.15);
         }
@@ -52,7 +47,6 @@
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -89,32 +83,29 @@
 
             <!-- Market Status Badges -->
             <div class="hidden md:flex items-center space-x-3 text-xs font-mono">
-                <div class="flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-darkBg border border-cardBorder" id="badge-tokyo">
+                <div class="flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-darkBg border border-cardBorder">
                     <span class="w-2 h-2 rounded-full bg-gray-500"></span>
                     <span class="text-gray-400">Tokyo</span>
                 </div>
-                <div class="flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-darkBg border border-cardBorder" id="badge-london">
+                <div class="flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-darkBg border border-cardBorder">
                     <span class="w-2 h-2 rounded-full bg-bullGreen animate-pulse"></span>
                     <span class="text-white">London</span>
                 </div>
-                <div class="flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-darkBg border border-cardBorder" id="badge-ny">
+                <div class="flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-darkBg border border-cardBorder">
                     <span class="w-2 h-2 rounded-full bg-bullGreen animate-pulse"></span>
                     <span class="text-white">New York</span>
                 </div>
             </div>
 
-            <!-- Quick Controls & Alert Toast Trigger -->
+            <!-- AI Chat Trigger -->
             <div class="flex items-center space-x-3">
                 <button onclick="toggleChatDrawer()" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-goldAccent/10 text-goldAccent border border-goldAccent/30 hover:bg-goldAccent/20 transition flex items-center space-x-1.5">
                     <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
-                    <span class="hidden sm:inline">AI Chat</span>
+                    <span class="hidden sm:inline">AI Chat Assistant</span>
                 </button>
             </div>
         </div>
     </header>
-
-    <!-- Notification Toast Container -->
-    <div id="toast-container" class="fixed top-20 right-4 z-50 space-y-3 max-w-sm w-full pointer-events-none"></div>
 
     <!-- Main Content Grid -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full space-y-6">
@@ -171,24 +162,24 @@
             </button>
         </nav>
 
-        <!-- PAGE 1: TERMINAL & CHART (Exact User Layout with Fixed Chart Height) -->
+        <!-- PAGE 1: TERMINAL & CHART (With 3 Signal Entries) -->
         <section id="content-page1" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Chart Container -->
+            <!-- Main Live Chart Panel -->
             <div class="lg:col-span-2 glass-panel p-5 rounded-2xl border border-cardBorder flex flex-col justify-between space-y-4">
                 <div class="flex flex-wrap justify-between items-center gap-2">
                     <div class="flex items-center space-x-3">
                         <span class="text-base font-bold text-white">XAU/USD Live Action</span>
                         <div class="flex rounded-lg bg-darkBg p-0.5 border border-cardBorder text-xs font-mono">
-                            <button onclick="setTF('15M')" class="px-2.5 py-1 rounded bg-cardBg text-goldAccent font-bold" id="tf-15m">15M</button>
-                            <button onclick="setTF('1H')" class="px-2.5 py-1 rounded text-gray-400 hover:text-white" id="tf-1h">1H</button>
-                            <button onclick="setTF('4H')" class="px-2.5 py-1 rounded text-gray-400 hover:text-white" id="tf-4h">4H</button>
-                            <button onclick="setTF('1D')" class="px-2.5 py-1 rounded text-gray-400 hover:text-white" id="tf-1d">1D</button>
+                            <button onclick="updateTF('15M')" id="btn-15m" class="px-2.5 py-1 rounded bg-cardBg text-goldAccent font-bold">15M</button>
+                            <button onclick="updateTF('1H')" id="btn-1h" class="px-2.5 py-1 rounded text-gray-400 hover:text-white">1H</button>
+                            <button onclick="updateTF('4H')" id="btn-4h" class="px-2.5 py-1 rounded text-gray-400 hover:text-white">4H</button>
+                            <button onclick="updateTF('1D')" id="btn-1d" class="px-2.5 py-1 rounded text-gray-400 hover:text-white">1D</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Canvas Area with Explicit Height Style so Chart.js renders correctly -->
-                <div style="width: 100%; height: 350px; position: relative;">
+                <!-- Canvas Wrapper with strict explicit dimensions -->
+                <div style="position: relative; width: 100%; height: 380px;">
                     <canvas id="mainChart"></canvas>
                 </div>
 
@@ -209,42 +200,84 @@
                 </div>
             </div>
 
-            <!-- Side Widget: Immediate Action & Setup Summary -->
+            <!-- Side Panel: 3 Signal Entry Options & Melt Reference -->
             <div class="space-y-6">
-                <!-- Active Signal Highlight -->
+                <!-- 3 Active Setup Cards -->
                 <div class="glass-panel p-5 rounded-2xl border border-goldAccent/30 gold-border-glow space-y-4">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <span class="px-2.5 py-1 rounded bg-bullGreen/20 text-bullGreen text-xs font-bold font-mono">BULLISH REBOUND</span>
-                            <h3 class="text-lg font-bold text-white mt-2">Intraday Support Retest</h3>
-                        </div>
-                        <span class="text-xs text-gray-400 font-mono">15M TF</span>
+                    <div class="flex justify-between items-center pb-2 border-b border-cardBorder">
+                        <h3 class="text-sm font-bold text-white flex items-center space-x-2">
+                            <i data-lucide="zap" class="w-4 h-4 text-goldAccent"></i>
+                            <span>Active Setup Signals (3)</span>
+                        </h3>
+                        <span class="text-[10px] bg-bullGreen/20 text-bullGreen px-2 py-0.5 rounded font-mono">Live</span>
                     </div>
 
-                    <p class="text-xs text-gray-300 leading-relaxed">
-                        Gold is bouncing cleanly off the $4,155 demand zone. Target $4,200 resistance retest while Treasury yields stabilize.
-                    </p>
+                    <!-- Setup 1: Intraday Support Retest -->
+                    <div class="p-3 bg-darkBg rounded-xl border border-cardBorder space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-bold text-bullGreen font-mono">#1 BULLISH REBOUND</span>
+                            <span class="text-[10px] text-gray-400 font-mono">15M TF</span>
+                        </div>
+                        <p class="text-[11px] text-gray-300">Bounce off $4,155 demand zone targeting $4,200 resistance.</p>
+                        <div class="grid grid-cols-3 gap-1 font-mono text-[10px] pt-1 text-center">
+                            <div class="p-1 rounded bg-cardBg border border-cardBorder">
+                                <span class="text-gray-400 block">Entry</span>
+                                <span class="text-goldAccent font-bold">$4,155.00</span>
+                            </div>
+                            <div class="p-1 rounded bg-cardBg border border-cardBorder">
+                                <span class="text-gray-400 block">Target</span>
+                                <span class="text-bullGreen font-bold">$4,200.00</span>
+                            </div>
+                            <div class="p-1 rounded bg-cardBg border border-cardBorder">
+                                <span class="text-gray-400 block">Stop Loss</span>
+                                <span class="text-bearRed font-bold">$4,130.00</span>
+                            </div>
+                        </div>
+                    </div>
 
-                    <div class="space-y-2 font-mono text-xs bg-darkBg p-3 rounded-xl border border-cardBorder">
-                        <div class="flex justify-between">
-                            <span class="text-gray-400">Optimal Entry:</span>
-                            <span class="text-goldAccent font-bold">$4,155.00 - $4,165.00</span>
+                    <!-- Setup 2: Breakout Confirmation -->
+                    <div class="p-3 bg-darkBg rounded-xl border border-cardBorder space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-bold text-goldAccent font-mono">#2 BREAKOUT BUY</span>
+                            <span class="text-[10px] text-gray-400 font-mono">1H TF</span>
                         </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-400">Take Profit 1:</span>
-                            <span class="text-bullGreen font-bold">$4,200.00</span>
+                        <p class="text-[11px] text-gray-300">Sustained break above $4,175 opens path toward macro ATH.</p>
+                        <div class="grid grid-cols-3 gap-1 font-mono text-[10px] pt-1 text-center">
+                            <div class="p-1 rounded bg-cardBg border border-cardBorder">
+                                <span class="text-gray-400 block">Entry</span>
+                                <span class="text-goldAccent font-bold">$4,176.00</span>
+                            </div>
+                            <div class="p-1 rounded bg-cardBg border border-cardBorder">
+                                <span class="text-gray-400 block">Target</span>
+                                <span class="text-bullGreen font-bold">$4,250.00</span>
+                            </div>
+                            <div class="p-1 rounded bg-cardBg border border-cardBorder">
+                                <span class="text-gray-400 block">Stop Loss</span>
+                                <span class="text-bearRed font-bold">$4,150.00</span>
+                            </div>
                         </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-400">Take Profit 2:</span>
-                            <span class="text-bullGreen font-bold">$4,250.00</span>
+                    </div>
+
+                    <!-- Setup 3: Mean Reversion Short -->
+                    <div class="p-3 bg-darkBg rounded-xl border border-cardBorder space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-bold text-bearRed font-mono">#3 PULLBACK SHORT</span>
+                            <span class="text-[10px] text-gray-400 font-mono">4H TF</span>
                         </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-400">Stop Loss:</span>
-                            <span class="text-bearRed font-bold">$4,130.00</span>
-                        </div>
-                        <div class="flex justify-between pt-1 border-t border-cardBorder">
-                            <span class="text-gray-400">Risk/Reward:</span>
-                            <span class="text-white font-bold">1 : 2.5</span>
+                        <p class="text-[11px] text-gray-300">Rejection at upper Bollinger Band ($4,205) for quick retracement.</p>
+                        <div class="grid grid-cols-3 gap-1 font-mono text-[10px] pt-1 text-center">
+                            <div class="p-1 rounded bg-cardBg border border-cardBorder">
+                                <span class="text-gray-400 block">Entry</span>
+                                <span class="text-goldAccent font-bold">$4,204.00</span>
+                            </div>
+                            <div class="p-1 rounded bg-cardBg border border-cardBorder">
+                                <span class="text-gray-400 block">Target</span>
+                                <span class="text-bullGreen font-bold">$4,168.00</span>
+                            </div>
+                            <div class="p-1 rounded bg-cardBg border border-cardBorder">
+                                <span class="text-gray-400 block">Stop Loss</span>
+                                <span class="text-bearRed font-bold">$4,220.00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -363,13 +396,3 @@
                 <span class="text-sm font-bold text-white">XAU/USD AI Companion Chat</span>
             </div>
             <button onclick="toggleChatDrawer()" class="text-gray-400 hover:text-white">
-                <i data-lucide="x" class="w-4 h-4"></i>
-            </button>
-        </div>
-        <div id="chat-messages" class="p-3.5 space-y-3 h-64 overflow-y-auto text-xs font-mono">
-            <div class="p-2.5 rounded-xl bg-darkBg border border-cardBorder text-gray-300">
-                Hello! I am your active Gold trading companion. Ask me about current support levels, risk parameters, or market confluence scores!
-            </div>
-        </div>
-        <div class="p-3 border-t border-cardBorder bg-cardBg flex space-x-2">
-            <input type="text" id="chat-input" placeholder="Ask about Gold setup..." class="flex-grow bg-darkBg border border-cardBorder rounded-xl px-3 py-2 text-xs text-
