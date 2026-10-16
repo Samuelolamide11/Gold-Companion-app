@@ -39,6 +39,11 @@
             color: #e2e8f0;
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #f3ba2f 0%, #ffe89a 50%, #d49511 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
         .gold-border-glow {
             box-shadow: 0 0 15px rgba(243, 186, 47, 0.15);
         }
@@ -84,10 +89,26 @@
 
             <!-- Market Status Badges -->
             <div class="hidden md:flex items-center space-x-3 text-xs font-mono">
-                <div class="flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-darkBg border border-cardBorder">
-                    <span class="w-2 h-2 rounded-full bg-bullGreen animate-pulse"></span>
-                    <span class="text-white">Scanner Engine Active</span>
+                <div class="flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-darkBg border border-cardBorder" id="badge-tokyo">
+                    <span class="w-2 h-2 rounded-full bg-gray-500"></span>
+                    <span class="text-gray-400">Tokyo</span>
                 </div>
+                <div class="flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-darkBg border border-cardBorder" id="badge-london">
+                    <span class="w-2 h-2 rounded-full bg-bullGreen animate-pulse"></span>
+                    <span class="text-white">London</span>
+                </div>
+                <div class="flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-darkBg border border-cardBorder" id="badge-ny">
+                    <span class="w-2 h-2 rounded-full bg-bullGreen animate-pulse"></span>
+                    <span class="text-white">New York</span>
+                </div>
+            </div>
+
+            <!-- Quick Controls -->
+            <div class="flex items-center space-x-3">
+                <button onclick="triggerAlertSim()" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-goldAccent/10 text-goldAccent border border-goldAccent/30 hover:bg-goldAccent/20 transition flex items-center space-x-1.5">
+                    <i data-lucide="bell-ring" class="w-3.5 h-3.5"></i>
+                    <span class="hidden sm:inline">Test Alert</span>
+                </button>
             </div>
         </div>
     </header>
@@ -95,42 +116,144 @@
     <!-- Main Content Grid -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full space-y-6">
 
-        <!-- Navigation Tabs -->
-        <nav class="flex space-x-2 border-b border-cardBorder pb-2 overflow-x-auto">
-            <button onclick="switchTab('overview')" id="tab-overview" class="px-4 py-2 text-sm font-semibold rounded-lg bg-goldAccent text-black transition flex items-center space-x-2 whitespace-nowrap">
-                <i data-lucide="line-chart" class="w-4 h-4"></i>
-                <span>Terminal & Chart</span>
-            </button>
-            <button onclick="switchTab('signals')" id="tab-signals" class="px-4 py-2 text-sm font-semibold rounded-lg text-gray-400 hover:text-white hover:bg-cardBg transition flex items-center space-x-2 whitespace-nowrap">
-                <i data-lucide="zap" class="w-4 h-4"></i>
-                <span>Setups & Scanner</span>
-            </button>
-        </nav>
-
-        <!-- TAB 1: OVERVIEW & CHART -->
-        <section id="content-overview" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="lg:col-span-2 glass-panel p-5 rounded-2xl border border-cardBorder flex flex-col justify-between space-y-4">
-                <div class="flex justify-between items-center">
-                    <span class="text-base font-bold text-white">XAU/USD Live Action</span>
-                    <span class="text-xs font-mono text-goldAccent" id="spot-price">$4,168.70</span>
-                </div>
-                <div class="relative w-full h-80 sm:h-96">
-                    <canvas id="mainChart"></canvas>
+        <!-- Header Ticker Banner -->
+        <section class="grid grid-cols-2 md:grid-cols-5 gap-3">
+            <div class="glass-panel p-3.5 rounded-xl border border-cardBorder">
+                <span class="text-xs text-gray-400 font-medium block">Spot Price</span>
+                <div class="flex items-baseline space-x-1.5 mt-1">
+                    <span id="spot-price" class="text-xl font-extrabold font-mono text-white">$4,168.70</span>
+                    <span id="price-change-pct" class="text-xs font-bold font-mono text-bullGreen">+0.84%</span>
                 </div>
             </div>
-
-            <!-- Side Widget -->
-            <div class="space-y-6">
-                <div class="glass-panel p-5 rounded-2xl border border-goldAccent/30 gold-border-glow space-y-4">
-                    <span class="px-2.5 py-1 rounded bg-bullGreen/20 text-bullGreen text-xs font-bold font-mono">SCANNER STATUS</span>
-                    <h3 class="text-lg font-bold text-white mt-2" id="scanner-summary-status">Scanning M15 Market...</h3>
-                    <p class="text-xs text-gray-300">Automated multi-factor engine is actively checking for 80%+ setup confluence.</p>
+            <div class="glass-panel p-3.5 rounded-xl border border-cardBorder">
+                <span class="text-xs text-gray-400 font-medium block">24h High</span>
+                <span class="text-lg font-bold font-mono text-gray-200 mt-1 block">$4,178.40</span>
+            </div>
+            <div class="glass-panel p-3.5 rounded-xl border border-cardBorder">
+                <span class="text-xs text-gray-400 font-medium block">24h Low</span>
+                <span class="text-lg font-bold font-mono text-gray-200 mt-1 block">$4,100.16</span>
+            </div>
+            <div class="glass-panel p-3.5 rounded-xl border border-cardBorder">
+                <span class="text-xs text-gray-400 font-medium block">Spread / Volatility</span>
+                <div class="flex items-center space-x-2 mt-1">
+                    <span class="text-sm font-bold font-mono text-goldAccent">0.25 pt</span>
+                    <span class="text-[10px] px-1.5 py-0.5 rounded bg-goldAccent/20 text-goldAccent">HIGH</span>
+                </div>
+            </div>
+            <div class="glass-panel p-3.5 rounded-xl border border-cardBorder col-span-2 md:col-span-1">
+                <span class="text-xs text-gray-400 font-medium block">Market Sentiment</span>
+                <div class="flex items-center space-x-2 mt-1">
+                    <div class="w-full bg-darkBg rounded-full h-2 overflow-hidden flex">
+                        <div class="bg-bullGreen h-full" style="width: 68%;"></div>
+                        <div class="bg-bearRed h-full" style="width: 32%;"></div>
+                    </div>
+                    <span class="text-xs font-bold font-mono text-bullGreen">68% Buy</span>
                 </div>
             </div>
         </section>
 
-        <!-- TAB 2: SIGNALS & LIVE MARKET SCANNER -->
-        <section id="content-signals" class="hidden space-y-6">
+        <!-- Navigation Tabs (Page 1, Page 2, Page 3) -->
+        <nav class="flex space-x-2 border-b border-cardBorder pb-2 overflow-x-auto">
+            <button onclick="switchTab('page1')" id="tab-page1" class="px-4 py-2 text-sm font-semibold rounded-lg bg-goldAccent text-black transition flex items-center space-x-2 whitespace-nowrap">
+                <i data-lucide="line-chart" class="w-4 h-4"></i>
+                <span>Page 1: Terminal & Chart</span>
+            </button>
+            <button onclick="switchTab('page2')" id="tab-page2" class="px-4 py-2 text-sm font-semibold rounded-lg text-gray-400 hover:text-white hover:bg-cardBg transition flex items-center space-x-2 whitespace-nowrap">
+                <i data-lucide="radar" class="w-4 h-4"></i>
+                <span>Page 2: Setups & Scanner</span>
+            </button>
+            <button onclick="switchTab('page3')" id="tab-page3" class="px-4 py-2 text-sm font-semibold rounded-lg text-gray-400 hover:text-white hover:bg-cardBg transition flex items-center space-x-2 whitespace-nowrap">
+                <i data-lucide="sliders" class="w-4 h-4"></i>
+                <span>Page 3: Technicals & Analytics</span>
+            </button>
+        </nav>
+
+        <!-- PAGE 1: ORIGINAL TERMINAL & CHART INTERFACE -->
+        <section id="content-page1" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Main Chart Area -->
+            <div class="lg:col-span-2 glass-panel p-5 rounded-2xl border border-cardBorder flex flex-col justify-between space-y-4">
+                <div class="flex flex-wrap justify-between items-center gap-2">
+                    <div class="flex items-center space-x-3">
+                        <span class="text-base font-bold text-white">XAU/USD Live Action</span>
+                        <div class="flex rounded-lg bg-darkBg p-0.5 border border-cardBorder text-xs font-mono">
+                            <button class="px-2.5 py-1 rounded bg-cardBg text-goldAccent font-bold">15M</button>
+                            <button class="px-2.5 py-1 rounded text-gray-400 hover:text-white">1H</button>
+                            <button class="px-2.5 py-1 rounded text-gray-400 hover:text-white">4H</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative w-full h-80 sm:h-96">
+                    <canvas id="mainChart"></canvas>
+                </div>
+
+                <!-- Key Chart Levels Legend -->
+                <div class="grid grid-cols-3 gap-2 pt-2 border-t border-cardBorder text-center text-xs font-mono">
+                    <div class="p-2 rounded bg-bearRed/10 border border-bearRed/30">
+                        <span class="text-bearRed block font-bold">RESISTANCE 1</span>
+                        <span class="text-gray-200">$4,201.00</span>
+                    </div>
+                    <div class="p-2 rounded bg-goldAccent/10 border border-goldAccent/30">
+                        <span class="text-goldAccent block font-bold">PIVOT POINT</span>
+                        <span class="text-gray-200">$4,167.60</span>
+                    </div>
+                    <div class="p-2 rounded bg-bullGreen/10 border border-bullGreen/30">
+                        <span class="text-bullGreen block font-bold">SUPPORT 1</span>
+                        <span class="text-gray-200">$4,134.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Side Widgets -->
+            <div class="space-y-6">
+                <!-- Active Setup Box -->
+                <div class="glass-panel p-5 rounded-2xl border border-goldAccent/30 gold-border-glow space-y-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="px-2.5 py-1 rounded bg-bullGreen/20 text-bullGreen text-xs font-bold font-mono">BULLISH REBOUND</span>
+                            <h3 class="text-lg font-bold text-white mt-2">Intraday Support Retest</h3>
+                        </div>
+                        <span class="text-xs text-gray-400 font-mono">15M TF</span>
+                    </div>
+
+                    <div class="space-y-2 font-mono text-xs bg-darkBg p-3 rounded-xl border border-cardBorder">
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Optimal Entry:</span>
+                            <span class="text-goldAccent font-bold">$4,155.00 - $4,165.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Take Profit 1:</span>
+                            <span class="text-bullGreen font-bold">$4,200.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Stop Loss:</span>
+                            <span class="text-bearRed font-bold">$4,130.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Melt Value Reference -->
+                <div class="glass-panel p-5 rounded-2xl border border-cardBorder space-y-3">
+                    <h3 class="text-sm font-bold text-white flex items-center space-x-2">
+                        <i data-lucide="coins" class="w-4 h-4 text-goldAccent"></i>
+                        <span>Melt Value Breakdown (Ounce)</span>
+                    </h3>
+                    <div class="space-y-2 font-mono text-xs">
+                        <div class="flex justify-between p-2 rounded bg-darkBg">
+                            <span class="text-gray-300">24K (99.9%)</span>
+                            <span class="text-white font-bold">$4,168.70</span>
+                        </div>
+                        <div class="flex justify-between p-2 rounded bg-darkBg">
+                            <span class="text-gray-300">22K (91.7%)</span>
+                            <span class="text-gray-200 font-bold">$3,821.45</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 2: LIVE MARKET SCANNER & SETUPS -->
+        <section id="content-page2" class="hidden space-y-6">
             <div class="flex justify-between items-center">
                 <div>
                     <h2 class="text-xl font-bold text-white flex items-center space-x-2">
@@ -145,147 +268,119 @@
                 </span>
             </div>
 
-            <!-- Confluence Progress Dashboard -->
+            <!-- Confluence Gauges -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Bullish Confluence Gauge -->
                 <div class="glass-panel p-5 rounded-2xl border border-cardBorder space-y-4">
                     <div class="flex justify-between items-center">
-                        <span class="text-sm font-bold text-bullGreen flex items-center space-x-1.5">
-                            <i data-lucide="trending-up" class="w-4 h-4"></i>
-                            <span>Bullish Confluence Score</span>
-                        </span>
+                        <span class="text-sm font-bold text-bullGreen">Bullish Confluence Score</span>
                         <span class="text-lg font-mono font-bold text-bullGreen" id="bull-gauge-val">75%</span>
                     </div>
                     <div class="w-full bg-darkBg rounded-full h-3 overflow-hidden border border-cardBorder">
                         <div id="bull-gauge-bar" class="bg-bullGreen h-full transition-all duration-500" style="width: 75%;"></div>
                     </div>
-                    <p class="text-xs text-gray-400">Requires <span class="text-goldAccent font-bold">80%</span> to trigger automated BUY setup.</p>
                 </div>
 
-                <!-- Bearish Confluence Gauge -->
                 <div class="glass-panel p-5 rounded-2xl border border-cardBorder space-y-4">
                     <div class="flex justify-between items-center">
-                        <span class="text-sm font-bold text-bearRed flex items-center space-x-1.5">
-                            <i data-lucide="trending-down" class="w-4 h-4"></i>
-                            <span>Bearish Confluence Score</span>
-                        </span>
+                        <span class="text-sm font-bold text-bearRed">Bearish Confluence Score</span>
                         <span class="text-lg font-mono font-bold text-bearRed" id="bear-gauge-val">25%</span>
                     </div>
                     <div class="w-full bg-darkBg rounded-full h-3 overflow-hidden border border-cardBorder">
                         <div id="bear-gauge-bar" class="bg-bearRed h-full transition-all duration-500" style="width: 25%;"></div>
                     </div>
-                    <p class="text-xs text-gray-400">Requires <span class="text-goldAccent font-bold">80%</span> to trigger automated SELL setup.</p>
                 </div>
             </div>
 
-            <!-- Indicator Score Matrix Breakdown -->
-            <div class="glass-panel p-5 rounded-2xl border border-cardBorder space-y-4">
-                <h3 class="text-sm font-bold text-white flex items-center space-x-2">
-                    <i data-lucide="sliders" class="w-4 h-4 text-goldAccent"></i>
-                    <span>Multi-Factor Indicator Matrix Breakdown</span>
-                </h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-mono text-xs">
-                    <!-- EMA Trend -->
-                    <div class="p-3 rounded-xl bg-darkBg border border-cardBorder space-y-1">
-                        <span class="text-gray-400 block">1. EMA Trend (20 vs 50)</span>
-                        <span class="text-bullGreen font-bold block" id="mat-ema">BULLISH (+25%)</span>
-                        <span class="text-[10px] text-gray-500">EMA20 > EMA50</span>
-                    </div>
-                    <!-- RSI Momentum -->
-                    <div class="p-3 rounded-xl bg-darkBg border border-cardBorder space-y-1">
-                        <span class="text-gray-400 block">2. RSI Momentum (14)</span>
-                        <span class="text-bullGreen font-bold block" id="mat-rsi">NEUTRAL/BULL (+25%)</span>
-                        <span class="text-[10px] text-gray-500">RSI: 52.4</span>
-                    </div>
-                    <!-- MACD Histogram -->
-                    <div class="p-3 rounded-xl bg-darkBg border border-cardBorder space-y-1">
-                        <span class="text-gray-400 block">3. MACD Histogram</span>
-                        <span class="text-bullGreen font-bold block" id="mat-macd">ACCELERATING (+25%)</span>
-                        <span class="text-[10px] text-gray-500">Hist > Prev Hist</span>
-                    </div>
-                    <!-- Bollinger Bands -->
-                    <div class="p-3 rounded-xl bg-darkBg border border-cardBorder space-y-1">
-                        <span class="text-gray-400 block">4. Bollinger Bands</span>
-                        <span class="text-gray-400 font-bold block" id="mat-bb">NO TOUCH (0%)</span>
-                        <span class="text-[10px] text-gray-500">Inside Range</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Scanner Log Feed -->
+            <!-- Live Log Terminal -->
             <div class="glass-panel p-5 rounded-2xl border border-cardBorder space-y-3">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-sm font-bold text-white flex items-center space-x-2">
-                        <i data-lucide="terminal" class="w-4 h-4 text-goldAccent"></i>
-                        <span>Live Scanner Log Terminal</span>
-                    </h3>
-                    <span class="text-[10px] font-mono text-gray-400">Updates every 3s</span>
-                </div>
+                <h3 class="text-sm font-bold text-white flex items-center space-x-2">
+                    <i data-lucide="terminal" class="w-4 h-4 text-goldAccent"></i>
+                    <span>Live Scanner Log Terminal</span>
+                </h3>
                 <div class="bg-darkBg p-3 rounded-xl border border-cardBorder font-mono text-xs space-y-1.5 h-40 overflow-y-auto" id="scanner-log">
-                    <div class="text-gray-400">[00:00:01] Initializing Multi-Factor Market Scanner...</div>
-                    <div class="text-goldAccent">[00:00:03] Fetched Spot XAU/USD: $4,168.70</div>
-                    <div class="text-bullGreen">[00:00:05] EMA20 > EMA50 verified (+25% Bullish)</div>
-                    <div class="text-bullGreen">[00:00:05] RSI at 52.4 - Healthy momentum (+25% Bullish)</div>
-                    <div class="text-gray-300">[00:00:05] Total Score: 75% Bullish | Status: CONSOLIDATING (Holding)</div>
+                    <div class="text-gray-400">[00:00:01] Scanning market for 80%+ setup confluence...</div>
                 </div>
             </div>
         </section>
+
+        <!-- PAGE 3: TECHNICALS & ANALYTICS MATRIX -->
+        <section id="content-page3" class="hidden space-y-6">
+            <div class="glass-panel p-5 rounded-2xl border border-cardBorder space-y-4">
+                <h2 class="text-xl font-bold text-white">Technical Indicator Analysis Matrix</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-mono text-xs">
+                    <div class="p-3 rounded-xl bg-darkBg border border-cardBorder space-y-1">
+                        <span class="text-gray-400 block">EMA 20/50 Crossover</span>
+                        <span class="text-bullGreen font-bold block">BULLISH (+25%)</span>
+                    </div>
+                    <div class="p-3 rounded-xl bg-darkBg border border-cardBorder space-y-1">
+                        <span class="text-gray-400 block">RSI (14) Momentum</span>
+                        <span class="text-bullGreen font-bold block">ACTIVE (+25%)</span>
+                    </div>
+                    <div class="p-3 rounded-xl bg-darkBg border border-cardBorder space-y-1">
+                        <span class="text-gray-400 block">MACD Histogram</span>
+                        <span class="text-bullGreen font-bold block">ACCELERATING (+25%)</span>
+                    </div>
+                    <div class="p-3 rounded-xl bg-darkBg border border-cardBorder space-y-1">
+                        <span class="text-gray-400 block">Bollinger Bands</span>
+                        <span class="text-gray-400 font-bold block">RANGE BOUND (0%)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <!-- Scripts -->
     <script>
-        // Lucide Icons Initialization
         lucide.createIcons();
 
-        // Tab Switcher
-        function switchTab(tabName) {
-            document.getElementById('content-overview').classList.add('hidden');
-            document.getElementById('content-signals').classList.add('hidden');
+        // 3-Page Tab Switcher
+        function switchTab(pageId) {
+            document.getElementById('content-page1').classList.add('hidden');
+            document.getElementById('content-page2').classList.add('hidden');
+            document.getElementById('content-page3').classList.add('hidden');
 
-            document.getElementById('tab-overview').className = "px-4 py-2 text-sm font-semibold rounded-lg text-gray-400 hover:text-white hover:bg-cardBg transition flex items-center space-x-2 whitespace-nowrap";
-            document.getElementById('tab-signals').className = "px-4 py-2 text-sm font-semibold rounded-lg text-gray-400 hover:text-white hover:bg-cardBg transition flex items-center space-x-2 whitespace-nowrap";
+            document.getElementById('tab-page1').className = "px-4 py-2 text-sm font-semibold rounded-lg text-gray-400 hover:text-white hover:bg-cardBg transition flex items-center space-x-2 whitespace-nowrap";
+            document.getElementById('tab-page2').className = "px-4 py-2 text-sm font-semibold rounded-lg text-gray-400 hover:text-white hover:bg-cardBg transition flex items-center space-x-2 whitespace-nowrap";
+            document.getElementById('tab-page3').className = "px-4 py-2 text-sm font-semibold rounded-lg text-gray-400 hover:text-white hover:bg-cardBg transition flex items-center space-x-2 whitespace-nowrap";
 
-            if (tabName === 'overview') {
-                document.getElementById('content-overview').classList.remove('hidden');
-                document.getElementById('tab-overview').className = "px-4 py-2 text-sm font-semibold rounded-lg bg-goldAccent text-black transition flex items-center space-x-2 whitespace-nowrap";
-            } else if (tabName === 'signals') {
-                document.getElementById('content-signals').classList.remove('hidden');
-                document.getElementById('tab-signals').className = "px-4 py-2 text-sm font-semibold rounded-lg bg-goldAccent text-black transition flex items-center space-x-2 whitespace-nowrap";
+            if (pageId === 'page1') {
+                document.getElementById('content-page1').classList.remove('hidden');
+                document.getElementById('tab-page1').className = "px-4 py-2 text-sm font-semibold rounded-lg bg-goldAccent text-black transition flex items-center space-x-2 whitespace-nowrap";
+            } else if (pageId === 'page2') {
+                document.getElementById('content-page2').classList.remove('hidden');
+                document.getElementById('tab-page2').className = "px-4 py-2 text-sm font-semibold rounded-lg bg-goldAccent text-black transition flex items-center space-x-2 whitespace-nowrap";
+            } else if (pageId === 'page3') {
+                document.getElementById('content-page3').classList.remove('hidden');
+                document.getElementById('tab-page3').className = "px-4 py-2 text-sm font-semibold rounded-lg bg-goldAccent text-black transition flex items-center space-x-2 whitespace-nowrap";
             }
         }
 
-        // Live API Fetch Bridge for Scanner Page
-        async function fetchScannerApi() {
+        // Live API Fetch Bridge
+        async function fetchApiData() {
             try {
                 const res = await fetch('/api/status');
                 const data = await res.json();
-                
                 if (data) {
-                    // Update Gauges
-                    document.getElementById('bull-gauge-val').innerText = data.bull_score + "%";
-                    document.getElementById('bull-gauge-bar').style.width = data.bull_score + "%";
-                    
-                    document.getElementById('bear-gauge-val').innerText = data.bear_score + "%";
-                    document.getElementById('bear-gauge-bar').style.width = data.bear_score + "%";
-
-                    // Log updates
-                    const logBox = document.getElementById('scanner-log');
-                    const newLog = document.createElement('div');
-                    newLog.className = "text-goldAccent";
-                    newLog.innerText = `[${new Date().toLocaleTimeString()}] Spot Price: $${data.price} | Bull: ${data.bull_score}% | Bear: ${data.bear_score}%`;
-                    logBox.appendChild(newLog);
-                    if(logBox.children.length > 20) logBox.removeChild(logBox.children[0]);
-                    logBox.scrollTop = logBox.scrollHeight;
+                    if(document.getElementById('spot-price')) document.getElementById('spot-price').innerText = "$" + data.price;
+                    if(document.getElementById('bull-gauge-val')) {
+                        document.getElementById('bull-gauge-val').innerText = data.bull_score + "%";
+                        document.getElementById('bull-gauge-bar').style.width = data.bull_score + "%";
+                    }
+                    if(document.getElementById('bear-gauge-val')) {
+                        document.getElementById('bear-gauge-val').innerText = data.bear_score + "%";
+                        document.getElementById('bear-gauge-bar').style.width = data.bear_score + "%";
+                    }
                 }
-            } catch (e) { console.error("Scanner Fetch Error:", e); }
+            } catch (e) { console.error("Data Fetch Error:", e); }
         }
 
-        setInterval(fetchScannerApi, 3000);
+        setInterval(fetchApiData, 3000);
 
         // Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW error:', err));
+                navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW Error:', err));
             });
         }
     </script>
