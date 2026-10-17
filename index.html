@@ -115,7 +115,7 @@
             </button>
         </nav>
 
-        <!-- PAGE 1: TERMINAL & CHART -->
+        <!-- PAGE 1: TERMINAL & CHART & MT5 EXECUTION -->
         <section id="content-page1" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div class="lg:col-span-2 glass-panel p-5 rounded-2xl border border-cardBorder flex flex-col justify-between space-y-4">
                 <div class="flex justify-between items-center">
@@ -126,27 +126,55 @@
                     <canvas id="mainChart"></canvas>
                 </div>
             </div>
+
             <div class="space-y-6">
+                <!-- Trade Execution Panel -->
                 <div class="glass-panel p-5 rounded-2xl border border-goldAccent/30 gold-border-glow space-y-4">
+                    <h3 class="text-sm font-bold text-white flex items-center space-x-2">
+                        <i data-lucide="zap" class="w-4 h-4 text-goldAccent"></i>
+                        <span>MetaTrader 5 Trade Execution</span>
+                    </h3>
+                    <div class="grid grid-cols-3 gap-2 text-xs font-mono">
+                        <div>
+                            <label class="text-gray-400 block mb-1">Lot Size</label>
+                            <input type="number" id="trade-lot" value="0.01" step="0.01" class="w-full bg-darkBg border border-cardBorder rounded-lg p-2 text-white font-bold">
+                        </div>
+                        <div>
+                            <label class="text-gray-400 block mb-1">Stop Loss</label>
+                            <input type="number" id="trade-sl" placeholder="0.00" step="0.1" class="w-full bg-darkBg border border-cardBorder rounded-lg p-2 text-white font-bold">
+                        </div>
+                        <div>
+                            <label class="text-gray-400 block mb-1">Take Profit</label>
+                            <input type="number" id="trade-tp" placeholder="0.00" step="0.1" class="w-full bg-darkBg border border-cardBorder rounded-lg p-2 text-white font-bold">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 pt-2">
+                        <button onclick="executeAppTrade('BUY')" class="py-2.5 bg-bullGreen hover:opacity-90 text-black font-bold text-xs rounded-xl transition flex items-center justify-center space-x-1">
+                            <span>BUY (Long)</span>
+                        </button>
+                        <button onclick="executeAppTrade('SELL')" class="py-2.5 bg-bearRed hover:opacity-90 text-white font-bold text-xs rounded-xl transition flex items-center justify-center space-x-1">
+                            <span>SELL (Short)</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Signal Status Card -->
+                <div class="glass-panel p-5 rounded-2xl border border-cardBorder space-y-4">
                     <div class="flex justify-between items-center pb-2 border-b border-cardBorder">
                         <h3 class="text-sm font-bold text-white flex items-center space-x-2">
-                            <i data-lucide="zap" class="w-4 h-4 text-goldAccent"></i>
+                            <i data-lucide="activity" class="w-4 h-4 text-goldAccent"></i>
                             <span>Live Signal Status</span>
                         </h3>
                         <span id="signal-badge" class="text-[10px] bg-gray-700 text-gray-300 px-2 py-0.5 rounded font-mono">Scanning...</span>
                     </div>
                     <div class="p-3 bg-darkBg rounded-xl border border-cardBorder space-y-2">
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs font-bold text-goldAccent font-mono">CONFLUENCE TRIGGER RULE</span>
-                            <span class="text-[10px] text-gray-400 font-mono">&gt;= 80%</span>
-                        </div>
                         <p id="setup-status-desc" class="text-xs text-gray-300">Awaiting high momentum threshold crossing to dispatch Telegram setup alert.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- PAGE 2: LIVE MARKET SCANNER (Restored Terminal Log) -->
+        <!-- PAGE 2: LIVE MARKET SCANNER -->
         <section id="content-page2" class="hidden space-y-6">
             <div class="flex justify-between items-center">
                 <h2 class="text-xl font-bold text-white">Live Market Scanner Engine</h2>
@@ -285,9 +313,27 @@
             box.innerHTML += `<div class="p-2.5 rounded-xl bg-goldAccent/10 border border-goldAccent/30 text-white text-right">${msg}</div>`;
             input.value = "";
             setTimeout(() => {
-                box.innerHTML += `<div class="p-2.5 rounded-xl bg-darkBg border border-cardBorder text-gray-300">AI Tutor: Based on live market telemetry, gold is reacting to recent macroeconomic data prints and institutional liquidity sweeps. Check the Education Hub for a detailed breakdown!</div>`;
+                box.innerHTML += `<div class="p-2.5 rounded-xl bg-darkBg border border-cardBorder text-gray-300">AI Tutor: Gold is reacting to real yield shifts and institutional liquidity pools. Check the Education Hub tab for complete fundamental breakdowns.</div>`;
                 box.scrollTop = box.scrollHeight;
             }, 600);
+        }
+
+        async function executeAppTrade(action) {
+            const lot = document.getElementById('trade-lot').value;
+            const sl = document.getElementById('trade-sl').value;
+            const tp = document.getElementById('trade-tp').value;
+
+            try {
+                const res = await fetch('https://gold-companion-api.onrender.com/api/place-trade', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action, lot, sl, tp })
+                });
+                const data = await res.json();
+                alert(`✅ Trade Order Queued! Sent to MT5 Terminal (${action} ${lot} lots).`);
+            } catch(e) {
+                alert('Error submitting trade to server.');
+            }
         }
 
         let goldChart;
@@ -341,7 +387,6 @@
                     document.getElementById('page2-bear-val').innerText = bearScore + "%";
                     document.getElementById('page2-bear-bar').style.width = bearScore + "%";
 
-                    // Append to Scanner Terminal Log
                     const logBox = document.getElementById('scanner-log');
                     logBox.innerHTML += `<div>[${timeNow}] Price: $${price} | Bull: ${bullScore}% | Bear: ${bearScore}%</div>`;
                     logBox.scrollTop = logBox.scrollHeight;
