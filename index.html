@@ -344,7 +344,7 @@
     <script>
         lucide.createIcons();
 
-        // 3-Page Tab Navigation (FIXED function definition)
+        // 3-Page Tab Navigation
         function switchTab(pageId) {
             document.getElementById('content-page1').classList.add('hidden');
             document.getElementById('content-page2').classList.add('hidden');
@@ -436,11 +436,35 @@
                 window.goldChart.update();
             }
         }
+
+        // Live API Data Sync Bridge (Connected to Render Backend)
+        async function fetchApiData() {
+            try {
+                // REPLACE WITH YOUR ACTUAL RENDER URL
+                const res = await fetch('https://gold-companion-api.onrender.com/api/status');
+                const data = await res.json();
+                if (data) {
+                    if(document.getElementById('spot-price')) document.getElementById('spot-price').innerText = "$" + data.price;
+                    if(document.getElementById('bull-gauge-val')) {
+                        document.getElementById('bull-gauge-val').innerText = data.bull_score + "%";
+                        document.getElementById('bull-gauge-bar').style.width = data.bull_score + "%";
+                    }
+                    if(document.getElementById('bear-gauge-val')) {
+                        document.getElementById('bear-gauge-val').innerText = data.bear_score + "%";
+                        document.getElementById('bear-gauge-bar').style.width = data.bear_score + "%";
+                    }
+                }
+            } catch (e) { console.error("Data Sync Error:", e); }
+        }
+
+        setInterval(fetchApiData, 3000);
+
+        // Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW Error:', err));
+            });
+        }
     </script>
-    <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js');
-  }
-</script>
 </body>
 </html>
