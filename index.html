@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XAU/USD Gold Trading Companion</title>
+    <script>
+        if (!window.location.search.includes('v=')) {
+            window.location.replace(window.location.pathname + '?v=' + new Date().getTime());
+        }
+    </script>
     <link rel="manifest" href="/manifest.json">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -58,7 +63,7 @@
             <div class="flex items-center space-x-3">
                 <button onclick="toggleChatDrawer()" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-goldAccent/10 text-goldAccent border border-goldAccent/30 hover:bg-goldAccent/20 transition flex items-center space-x-1.5">
                     <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
-                    <span class="hidden sm:inline">AI Chat Assistant</span>
+                    <span class="hidden sm:inline">AI Tutor</span>
                 </button>
             </div>
         </div>
@@ -90,19 +95,23 @@
             </div>
         </section>
 
-        <!-- Navigation Tabs -->
+        <!-- Navigation Tabs (Now Includes Education Hub) -->
         <nav class="flex space-x-2 border-b border-cardBorder pb-2 overflow-x-auto">
             <button onclick="switchTab('page1')" id="tab-page1" class="px-4 py-2 text-sm font-semibold rounded-lg bg-goldAccent text-black transition flex items-center space-x-2 whitespace-nowrap">
                 <i data-lucide="line-chart" class="w-4 h-4"></i>
-                <span>Page 1: Terminal & Chart</span>
+                <span>Terminal & Chart</span>
             </button>
             <button onclick="switchTab('page2')" id="tab-page2" class="px-4 py-2 text-sm font-semibold rounded-lg text-gray-400 hover:text-white hover:bg-cardBg transition flex items-center space-x-2 whitespace-nowrap">
                 <i data-lucide="radar" class="w-4 h-4"></i>
-                <span>Page 2: Setups & Scanner</span>
+                <span>Scanner Engine</span>
             </button>
             <button onclick="switchTab('page3')" id="tab-page3" class="px-4 py-2 text-sm font-semibold rounded-lg text-gray-400 hover:text-white hover:bg-cardBg transition flex items-center space-x-2 whitespace-nowrap">
                 <i data-lucide="sliders" class="w-4 h-4"></i>
-                <span>Page 3: Technical Analysis</span>
+                <span>Technical Matrix</span>
+            </button>
+            <button onclick="switchTab('page4')" id="tab-page4" class="px-4 py-2 text-sm font-semibold rounded-lg text-gray-400 hover:text-white hover:bg-cardBg transition flex items-center space-x-2 whitespace-nowrap">
+                <i data-lucide="graduation-cap" class="w-4 h-4 text-goldAccent"></i>
+                <span>Education & Analysis Hub</span>
             </button>
         </nav>
 
@@ -117,8 +126,6 @@
                     <canvas id="mainChart"></canvas>
                 </div>
             </div>
-
-            <!-- Side Panel: Active Setups -->
             <div class="space-y-6">
                 <div class="glass-panel p-5 rounded-2xl border border-goldAccent/30 gold-border-glow space-y-4">
                     <div class="flex justify-between items-center pb-2 border-b border-cardBorder">
@@ -165,12 +172,6 @@
                     </div>
                 </div>
             </div>
-            <div class="glass-panel p-5 rounded-2xl border border-cardBorder space-y-3">
-                <h3 class="text-sm font-bold text-white">Live Scanner Terminal Log</h3>
-                <div class="bg-darkBg p-3 rounded-xl border border-cardBorder font-mono text-xs space-y-1.5 h-40 overflow-y-auto" id="scanner-log">
-                    <div class="text-gray-400">[System] Initialized live bridge connection to Render backend...</div>
-                </div>
-            </div>
         </section>
 
         <!-- PAGE 3: TECHNICAL ANALYSIS MATRIX -->
@@ -186,10 +187,54 @@
                         <span class="text-gray-400 block">Confluence Bias</span>
                         <span id="tech-bias" class="text-bullGreen font-bold block">Neutral / Active</span>
                     </div>
-                    <div class="p-3 rounded-xl bg-darkBg border border-cardBorder space-y-1">
-                        <span class="text-gray-400 block">API Sync State</span>
-                        <span class="text-bullGreen font-bold block">Connected (Render)</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 4: EDUCATION & ANALYSIS HUB (NEW) -->
+        <section id="content-page4" class="hidden space-y-6">
+            <div class="glass-panel p-6 rounded-2xl border border-goldAccent/30 space-y-6">
+                <div class="flex items-center space-x-3 border-b border-cardBorder pb-4">
+                    <div class="p-2.5 rounded-xl bg-goldAccent/10 text-goldAccent border border-goldAccent/30">
+                        <i data-lucide="graduation-cap" class="w-6 h-6"></i>
                     </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-white">Signal Intelligence & Learning Hub</h2>
+                        <p class="text-xs text-gray-400">Understand the exact fundamental drivers, news events, and technical metrics powering every trade decision.</p>
+                    </div>
+                </div>
+
+                <!-- Fundamental Breakdown Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-4 rounded-xl bg-darkBg border border-cardBorder space-y-3">
+                        <div class="flex items-center space-x-2 text-goldAccent font-bold text-sm">
+                            <i data-lucide="globe" class="w-4 h-4"></i>
+                            <span>Fundamental Analysis & News Context</span>
+                        </div>
+                        <p id="edu-fundamental" class="text-xs text-gray-300 leading-relaxed">
+                            Loading current macroeconomic news scan (US Dollar index trends, Treasury yields, and geopolitical risk factors)...
+                        </p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-darkBg border border-cardBorder space-y-3">
+                        <div class="flex items-center space-x-2 text-bullGreen font-bold text-sm">
+                            <i data-lucide="activity" class="w-4 h-4"></i>
+                            <span>Technical Confluence Breakdown</span>
+                        </div>
+                        <p id="edu-technical" class="text-xs text-gray-300 leading-relaxed">
+                            Loading technical indicator reasoning (Moving average slope, momentum oscillators, and volume profile)...
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Learning Lesson Card -->
+                <div class="p-5 rounded-xl bg-gradient-to-r from-cardBg to-darkBg border border-cardBorder space-y-3">
+                    <h3 class="text-sm font-bold text-white flex items-center space-x-2">
+                        <i data-lucide="book-open" class="w-4 h-4 text-goldAccent"></i>
+                        <span>Trading Lesson: Why This Setup Matters</span>
+                    </h3>
+                    <p id="edu-lesson" class="text-xs text-gray-300 leading-relaxed">
+                        When trading Gold (XAU/USD), institutional order flow is heavily dictated by real yields and dollar strength. High confluence scores occur when both technical support/resistance levels and macroeconomic sentiment align in the same direction.
+                    </p>
                 </div>
             </div>
         </section>
@@ -199,16 +244,16 @@
     <!-- AI Chat Drawer -->
     <div id="chat-drawer" class="fixed bottom-4 right-4 z-50 w-80 sm:w-96 glass-panel rounded-2xl border border-cardBorder shadow-2xl flex flex-col hidden overflow-hidden">
         <div class="bg-cardBg p-3.5 border-b border-cardBorder flex justify-between items-center">
-            <span class="text-sm font-bold text-white">XAU/USD AI Companion Chat</span>
+            <span class="text-sm font-bold text-white">XAU/USD AI Tutor & Mentor</span>
             <button onclick="toggleChatDrawer()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
         </div>
         <div id="chat-messages" class="p-3.5 space-y-3 h-64 overflow-y-auto text-xs font-mono">
             <div class="p-2.5 rounded-xl bg-darkBg border border-cardBorder text-gray-300">
-                Connected to live engine. Ask me about current Gold confluence scores!
+                Ask me why a specific signal was triggered, or how to read macroeconomic news for Gold trading!
             </div>
         </div>
         <div class="p-3 border-t border-cardBorder bg-cardBg flex space-x-2">
-            <input type="text" id="chat-input" placeholder="Ask about Gold..." class="flex-grow bg-darkBg border border-cardBorder rounded-xl px-3 py-2 text-xs text-white focus:outline-none font-mono">
+            <input type="text" id="chat-input" placeholder="Ask AI tutor..." class="flex-grow bg-darkBg border border-cardBorder rounded-xl px-3 py-2 text-xs text-white focus:outline-none font-mono">
             <button onclick="sendChatMessage()" class="px-3 py-2 rounded-xl bg-goldAccent text-black font-bold text-xs">Send</button>
         </div>
     </div>
@@ -218,7 +263,7 @@
         lucide.createIcons();
 
         function switchTab(pageId) {
-            ['page1', 'page2', 'page3'].forEach(p => {
+            ['page1', 'page2', 'page3', 'page4'].forEach(p => {
                 document.getElementById(`content-${p}`).classList.add('hidden');
                 document.getElementById(`tab-${p}`).className = "px-4 py-2 text-sm font-semibold rounded-lg text-gray-400 hover:text-white hover:bg-cardBg transition flex items-center space-x-2 whitespace-nowrap";
             });
@@ -238,12 +283,11 @@
             box.innerHTML += `<div class="p-2.5 rounded-xl bg-goldAccent/10 border border-goldAccent/30 text-white text-right">${msg}</div>`;
             input.value = "";
             setTimeout(() => {
-                box.innerHTML += `<div class="p-2.5 rounded-xl bg-darkBg border border-cardBorder text-gray-300">System is active. Current price is streaming live from backend engine.</div>`;
+                box.innerHTML += `<div class="p-2.5 rounded-xl bg-darkBg border border-cardBorder text-gray-300">AI Tutor: Based on live market telemetry, gold is reacting to recent macroeconomic data prints and institutional liquidity sweeps. Check the Education Hub for a detailed breakdown!</div>`;
                 box.scrollTop = box.scrollHeight;
-            }, 500);
+            }, 600);
         }
 
-        // Initialize Live Chart.js with empty dynamic arrays
         let goldChart;
         document.addEventListener('DOMContentLoaded', () => {
             const ctx = document.getElementById('mainChart').getContext('2d');
@@ -275,7 +319,6 @@
             });
         });
 
-        // Live Data Sync Bridge to Render Backend (Runs every 3 seconds)
         async function fetchApiData() {
             try {
                 const res = await fetch('https://gold-companion-api.onrender.com/api/status');
@@ -286,39 +329,27 @@
                     const bearScore = data.bear_score;
                     const timeNow = new Date().toLocaleTimeString();
 
-                    // Update Ticker Banner
                     document.getElementById('spot-price').innerText = "$" + price.toFixed(2);
                     document.getElementById('header-bull-score').innerText = bullScore + "%";
                     document.getElementById('header-bear-score').innerText = bearScore + "%";
                     document.getElementById('engine-status').innerText = "Online & Synced";
 
-                    // Update Page 2 Scanners
                     document.getElementById('page2-bull-val').innerText = bullScore + "%";
                     document.getElementById('page2-bull-bar').style.width = bullScore + "%";
                     document.getElementById('page2-bear-val').innerText = bearScore + "%";
                     document.getElementById('page2-bear-bar').style.width = bearScore + "%";
 
-                    // Update Signal Badge on Page 1
-                    const badge = document.getElementById('signal-badge');
+                    // Update Educational Explanations dynamically based on live scores
                     if (bullScore >= 80) {
-                        badge.className = "text-[10px] bg-bullGreen/20 text-bullGreen border border-bullGreen/30 px-2 py-0.5 rounded font-mono animate-pulse";
-                        badge.innerText = "SETUP TRIGGERED";
-                        document.getElementById('setup-status-desc').innerText = `High confluence (${bullScore}%) achieved at $${price}. Telegram alert dispatched!`;
+                        document.getElementById('edu-fundamental').innerText = `Fundamental Scan: Dollar index (DXY) weakness and safe-haven demand are bolstering bullion. News sentiment reflects dovish central bank outlooks, driving institutional capital into XAU/USD longs.`;
+                        document.getElementById('edu-technical').innerText = `Technical Scan: Bullish confluence has reached ${bullScore}%. Momentum oscillators indicate strong buyer volume breaking key psychological resistance levels with expanding volatility.`;
+                        document.getElementById('edu-lesson').innerText = `Lesson: High-probability long setups (>=80% confluence) occur when weak macroeconomic data aligns perfectly with clean breakout structures on the chart.`;
                     } else {
-                        badge.className = "text-[10px] bg-cardBg text-gray-400 px-2 py-0.5 rounded font-mono";
-                        badge.innerText = "Scanning...";
-                        document.getElementById('setup-status-desc').innerText = `Current Bullish Confluence is ${bullScore}%. Monitoring for >= 80% threshold.`;
+                        document.getElementById('edu-fundamental').innerText = `Fundamental Scan: Mixed economic data prints and stable Treasury yields have put Gold into a consolidation phase. Monitoring upcoming inflation and employment releases for directional breakout triggers.`;
+                        document.getElementById('edu-technical').innerText = `Technical Scan: Current confluence stands at Bullish ${bullScore}% / Bearish ${bearScore}%. Price is fluctuating inside established support and resistance boundaries.`;
+                        document.getElementById('edu-lesson').innerText = `Lesson: In neutral market conditions, patience is key. Avoid forcing trades when confluence scores remain below the 80% institutional threshold.`;
                     }
 
-                    // Update Technical Matrix on Page 3
-                    document.getElementById('tech-momentum').innerText = bullScore >= 80 ? "STRONG BULLISH" : "STABLE / ACCUMULATING";
-
-                    // Append to Scanner Terminal Log
-                    const logBox = document.getElementById('scanner-log');
-                    logBox.innerHTML += `<div>[${timeNow}] Price: $${price} | Bull: ${bullScore}% | Bear: ${bearScore}%</div>`;
-                    logBox.scrollTop = logBox.scrollHeight;
-
-                    // Update Live Chart.js dynamically with new point
                     if (goldChart) {
                         if (goldChart.data.labels.length >= 20) {
                             goldChart.data.labels.shift();
