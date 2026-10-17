@@ -95,7 +95,7 @@
             </div>
         </section>
 
-        <!-- Navigation Tabs (Now Includes Education Hub) -->
+        <!-- Navigation Tabs -->
         <nav class="flex space-x-2 border-b border-cardBorder pb-2 overflow-x-auto">
             <button onclick="switchTab('page1')" id="tab-page1" class="px-4 py-2 text-sm font-semibold rounded-lg bg-goldAccent text-black transition flex items-center space-x-2 whitespace-nowrap">
                 <i data-lucide="line-chart" class="w-4 h-4"></i>
@@ -146,7 +146,7 @@
             </div>
         </section>
 
-        <!-- PAGE 2: LIVE MARKET SCANNER -->
+        <!-- PAGE 2: LIVE MARKET SCANNER (Restored Terminal Log) -->
         <section id="content-page2" class="hidden space-y-6">
             <div class="flex justify-between items-center">
                 <h2 class="text-xl font-bold text-white">Live Market Scanner Engine</h2>
@@ -172,6 +172,12 @@
                     </div>
                 </div>
             </div>
+            <div class="glass-panel p-5 rounded-2xl border border-cardBorder space-y-3">
+                <h3 class="text-sm font-bold text-white">Live Scanner Terminal Log</h3>
+                <div class="bg-darkBg p-3 rounded-xl border border-cardBorder font-mono text-xs space-y-1.5 h-48 overflow-y-auto" id="scanner-log">
+                    <div class="text-gray-400">[System] Initialized live bridge connection to Render backend...</div>
+                </div>
+            </div>
         </section>
 
         <!-- PAGE 3: TECHNICAL ANALYSIS MATRIX -->
@@ -191,7 +197,7 @@
             </div>
         </section>
 
-        <!-- PAGE 4: EDUCATION & ANALYSIS HUB (NEW) -->
+        <!-- PAGE 4: EDUCATION & ANALYSIS HUB -->
         <section id="content-page4" class="hidden space-y-6">
             <div class="glass-panel p-6 rounded-2xl border border-goldAccent/30 space-y-6">
                 <div class="flex items-center space-x-3 border-b border-cardBorder pb-4">
@@ -203,8 +209,6 @@
                         <p class="text-xs text-gray-400">Understand the exact fundamental drivers, news events, and technical metrics powering every trade decision.</p>
                     </div>
                 </div>
-
-                <!-- Fundamental Breakdown Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="p-4 rounded-xl bg-darkBg border border-cardBorder space-y-3">
                         <div class="flex items-center space-x-2 text-goldAccent font-bold text-sm">
@@ -212,7 +216,7 @@
                             <span>Fundamental Analysis & News Context</span>
                         </div>
                         <p id="edu-fundamental" class="text-xs text-gray-300 leading-relaxed">
-                            Loading current macroeconomic news scan (US Dollar index trends, Treasury yields, and geopolitical risk factors)...
+                            Loading current macroeconomic news scan...
                         </p>
                     </div>
                     <div class="p-4 rounded-xl bg-darkBg border border-cardBorder space-y-3">
@@ -221,12 +225,10 @@
                             <span>Technical Confluence Breakdown</span>
                         </div>
                         <p id="edu-technical" class="text-xs text-gray-300 leading-relaxed">
-                            Loading technical indicator reasoning (Moving average slope, momentum oscillators, and volume profile)...
+                            Loading technical indicator reasoning...
                         </p>
                     </div>
                 </div>
-
-                <!-- Learning Lesson Card -->
                 <div class="p-5 rounded-xl bg-gradient-to-r from-cardBg to-darkBg border border-cardBorder space-y-3">
                     <h3 class="text-sm font-bold text-white flex items-center space-x-2">
                         <i data-lucide="book-open" class="w-4 h-4 text-goldAccent"></i>
@@ -339,15 +341,17 @@
                     document.getElementById('page2-bear-val').innerText = bearScore + "%";
                     document.getElementById('page2-bear-bar').style.width = bearScore + "%";
 
-                    // Update Educational Explanations dynamically based on live scores
+                    // Append to Scanner Terminal Log
+                    const logBox = document.getElementById('scanner-log');
+                    logBox.innerHTML += `<div>[${timeNow}] Price: $${price} | Bull: ${bullScore}% | Bear: ${bearScore}%</div>`;
+                    logBox.scrollTop = logBox.scrollHeight;
+
                     if (bullScore >= 80) {
-                        document.getElementById('edu-fundamental').innerText = `Fundamental Scan: Dollar index (DXY) weakness and safe-haven demand are bolstering bullion. News sentiment reflects dovish central bank outlooks, driving institutional capital into XAU/USD longs.`;
+                        document.getElementById('edu-fundamental').innerText = `Fundamental Scan: Dollar index (DXY) softness and safe-haven demand are bolstering bullion. News sentiment reflects dovish central bank outlooks, driving institutional capital into XAU/USD longs.`;
                         document.getElementById('edu-technical').innerText = `Technical Scan: Bullish confluence has reached ${bullScore}%. Momentum oscillators indicate strong buyer volume breaking key psychological resistance levels with expanding volatility.`;
-                        document.getElementById('edu-lesson').innerText = `Lesson: High-probability long setups (>=80% confluence) occur when weak macroeconomic data aligns perfectly with clean breakout structures on the chart.`;
                     } else {
-                        document.getElementById('edu-fundamental').innerText = `Fundamental Scan: Mixed economic data prints and stable Treasury yields have put Gold into a consolidation phase. Monitoring upcoming inflation and employment releases for directional breakout triggers.`;
+                        document.getElementById('edu-fundamental').innerText = `Fundamental Scan: Mixed economic data prints and stable Treasury yields have put Gold into a consolidation phase. Monitoring upcoming inflation releases for breakout triggers.`;
                         document.getElementById('edu-technical').innerText = `Technical Scan: Current confluence stands at Bullish ${bullScore}% / Bearish ${bearScore}%. Price is fluctuating inside established support and resistance boundaries.`;
-                        document.getElementById('edu-lesson').innerText = `Lesson: In neutral market conditions, patience is key. Avoid forcing trades when confluence scores remain below the 80% institutional threshold.`;
                     }
 
                     if (goldChart) {
