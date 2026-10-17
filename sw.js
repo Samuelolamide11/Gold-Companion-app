@@ -1,15 +1,18 @@
+// Self-destructing Service Worker to clear stubborn caches
 self.addEventListener('install', (e) => {
-  e.waitUntil(
-    caches.open('gold-companion-v1').then((cache) => {
-      return cache.addAll(['/', '/index.html']);
-    })
-  );
+    self.skipWaiting();
 });
 
-self.addEventListener('fetch', (e) => {
-  e.respondWith(
-    caches.match(e.request).then((response) => {
-      return response || fetch(e.request);
-    })
-  );
+self.addEventListener('activate', (e) => {
+    e.waitUntil(
+        caches.keys().then((cacheNames) => {
+            return Promise.all(
+                cacheNames.map((cacheName) => caches.delete(cacheName))
+            );
+        }).then(() => {
+            return self.registration.unregister();
+        }).then(() => {
+            return self.clients.claim();
+        })
+    );
 });
