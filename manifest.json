@@ -1,18 +1,20 @@
 {
   "name": "XAU/USD Gold Trading Companion",
   "short_name": "GoldCompanion",
-  "description": "A real-time gold market terminal, multi-factor confluence scanner, and 24/7 automated trading companion for XAU/USD.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0b0c10",
   "theme_color": "#f3ba2f",
-  "orientation": "portrait",
   "icons": [
     {
-      "src": "https://goldcompanion.vercel.app/icon.png",
+      "src": "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=192&h=192&fit=crop",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=512&h=512&fit=crop",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/jpeg"
     }
   ]
 }
