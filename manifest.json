@@ -1,20 +1,32 @@
 {
   "name": "XAU/USD Gold Trading Companion",
   "short_name": "GoldCompanion",
+  "description": "Real-time Gold XAU/USD market terminal, automated confluence scanner, and trading companion.",
   "start_url": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#0b0c10",
   "theme_color": "#f3ba2f",
   "icons": [
     {
       "src": "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=192&h=192&fit=crop",
       "sizes": "192x192",
-      "type": "image/jpeg"
+      "type": "image/jpeg",
+      "purpose": "any maskable"
     },
     {
       "src": "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=512&h=512&fit=crop",
       "sizes": "512x512",
-      "type": "image/jpeg"
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=540&h=720&fit=crop",
+      "sizes": "540x720",
+      "type": "image/jpeg",
+      "form_factor": "narrow"
     }
   ]
 }
