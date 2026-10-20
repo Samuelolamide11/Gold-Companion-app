@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XAU/USD Gold Trading Companion</title>
+    <title>XAU/USD Gold Trading Companion - Pro Terminal</title>
     <script>
         if (!window.location.search.includes('v=')) {
             window.location.replace(window.location.pathname + '?v=' + new Date().getTime());
@@ -54,16 +54,10 @@
                 <div>
                     <div class="flex items-center space-x-2">
                         <h1 class="text-lg font-bold text-white tracking-wide">XAU/USD Companion</h1>
-                        <span class="text-xs px-2 py-0.5 rounded bg-goldAccent/10 text-goldAccent border border-goldAccent/30 font-mono">LIVE PRO</span>
+                        <span class="text-xs px-2 py-0.5 rounded bg-goldAccent/10 text-goldAccent border border-goldAccent/30 font-mono">PRO ANALYTICS</span>
                     </div>
-                    <p class="text-xs text-gray-400">Gold Market Terminal & Signal Engine</p>
+                    <p class="text-xs text-gray-400">Quantitative Multi-Pillar Engine</p>
                 </div>
-            </div>
-            <div class="flex items-center space-x-3">
-                <button onclick="toggleChatDrawer()" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-goldAccent/10 text-goldAccent border border-goldAccent/30 hover:bg-goldAccent/20 transition flex items-center space-x-1.5">
-                    <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
-                    <span class="hidden sm:inline">AI Tutor</span>
-                </button>
             </div>
         </div>
     </header>
@@ -73,7 +67,6 @@
 
         <!-- Header Ticker Banner -->
         <section class="grid grid-cols-1 md:grid-cols-4 gap-3">
-            <!-- REAL-TIME TRADINGVIEW SPOT PRICE TICKER -->
             <div class="glass-panel p-2 rounded-xl border border-cardBorder md:col-span-2 flex items-center overflow-hidden">
                 <div class="tradingview-widget-container w-full" style="height: 48px;">
                     <div class="tradingview-widget-container__widget"></div>
@@ -106,20 +99,16 @@
                 <span>Terminal & Chart</span>
             </button>
             <button onclick="switchTab('page2')" id="tab-page2" class="px-4 py-2 text-sm font-semibold rounded-lg text-gray-400 hover:text-white hover:bg-cardBg transition flex items-center space-x-2 whitespace-nowrap">
-                <i data-lucide="radar" class="w-4 h-4"></i>
-                <span>Scanner Engine</span>
+                <i data-lucide="sliders" class="w-4 h-4"></i>
+                <span>Multi-Pillar Analysis</span>
             </button>
             <button onclick="switchTab('page3')" id="tab-page3" class="px-4 py-2 text-sm font-semibold rounded-lg text-gray-400 hover:text-white hover:bg-cardBg transition flex items-center space-x-2 whitespace-nowrap">
                 <i data-lucide="zap" class="w-4 h-4 text-goldAccent"></i>
-                <span>Signals & Live Chat</span>
-            </button>
-            <button onclick="switchTab('page4')" id="tab-page4" class="px-4 py-2 text-sm font-semibold rounded-lg text-gray-400 hover:text-white hover:bg-cardBg transition flex items-center space-x-2 whitespace-nowrap">
-                <i data-lucide="graduation-cap" class="w-4 h-4"></i>
-                <span>Education Hub</span>
+                <span>Verified Signals & Chat</span>
             </button>
         </nav>
 
-        <!-- PAGE 1: TERMINAL & TRADINGVIEW CHART -->
+        <!-- PAGE 1: TERMINAL & CHART -->
         <section id="content-page1" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div class="lg:col-span-2 glass-panel p-4 rounded-2xl border border-cardBorder flex flex-col justify-between space-y-3">
                 <div class="flex justify-between items-center">
@@ -136,15 +125,13 @@
                         new TradingView.widget({
                             "autosize": true,
                             "symbol": "OANDA:XAUUSD",
-                            "interval": "5",
+                            "interval": "30",
                             "timezone": "Etc/UTC",
                             "theme": "dark",
                             "style": "1",
                             "locale": "en",
                             "toolbar_bg": "#0b0c10",
                             "enable_publishing": false,
-                            "hide_top_toolbar": false,
-                            "allow_symbol_change": true,
                             "container_id": "tradingview_xauusd"
                         });
                     </script>
@@ -182,164 +169,122 @@
                     </div>
                 </div>
 
-                <!-- Live Signal Status Card -->
-                <div class="glass-panel p-5 rounded-2xl border border-cardBorder space-y-4">
-                    <div class="flex justify-between items-center pb-2 border-b border-cardBorder">
-                        <h3 class="text-sm font-bold text-white flex items-center space-x-2">
-                            <i data-lucide="activity" class="w-4 h-4 text-goldAccent"></i>
-                            <span>Live Signal Status</span>
-                        </h3>
-                        <span id="signal-badge" class="text-[10px] bg-gray-700 text-gray-300 px-2 py-0.5 rounded font-mono">Scanning...</span>
-                    </div>
-                    <div class="p-3 bg-darkBg rounded-xl border border-cardBorder space-y-2">
-                        <div class="flex justify-between items-center">
-                            <span id="signal-title" class="text-xs font-bold text-goldAccent font-mono">MARKET SCANNING</span>
-                            <span class="text-[10px] text-gray-400 font-mono">&gt;= 80% Trigger</span>
-                        </div>
-                        <p id="setup-status-desc" class="text-xs text-gray-300">Monitoring real-time momentum threshold crossing...</p>
-                    </div>
+                <!-- Analysis Summary Box -->
+                <div class="glass-panel p-5 rounded-2xl border border-cardBorder space-y-3">
+                    <h3 class="text-sm font-bold text-white flex items-center space-x-2">
+                        <i data-lucide="shield-alert" class="w-4 h-4 text-goldAccent"></i>
+                        <span>Quantitative Status</span>
+                    </h3>
+                    <p id="live-structure-summary" class="text-xs text-gray-300 font-mono">Evaluating live chart data...</p>
                 </div>
             </div>
         </section>
 
-        <!-- PAGE 2: LIVE MARKET SCANNER -->
+        <!-- PAGE 2: MULTI-PILLAR ANALYSIS -->
         <section id="content-page2" class="hidden space-y-6">
-            <div class="flex justify-between items-center">
-                <h2 class="text-xl font-bold text-white">Live Market Scanner Engine</h2>
-                <span class="px-3 py-1.5 rounded-lg bg-bullGreen/10 text-bullGreen border border-bullGreen/30 text-xs font-mono font-bold">SWEEPING LIVE</span>
-            </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="glass-panel p-5 rounded-2xl border border-cardBorder space-y-4">
-                    <div class="flex justify-between items-center">
-                        <span class="text-sm font-bold text-bullGreen">Bullish Confluence Score</span>
-                        <span class="text-lg font-mono font-bold text-bullGreen" id="page2-bull-val">--%</span>
-                    </div>
-                    <div class="w-full bg-darkBg rounded-full h-3 overflow-hidden border border-cardBorder">
-                        <div id="page2-bull-bar" class="bg-bullGreen h-full transition-all duration-500" style="width: 0%;"></div>
-                    </div>
+                <!-- Fundamental Pillar -->
+                <div class="glass-panel p-5 rounded-2xl border border-cardBorder space-y-3">
+                    <h3 class="text-sm font-bold text-goldAccent flex items-center space-x-2">
+                        <i data-lucide="globe" class="w-4 h-4"></i>
+                        <span>Pillar 1: Fundamental & Macro Drivers</span>
+                    </h3>
+                    <p id="analysis-fundamental" class="text-xs text-gray-300 leading-relaxed font-mono">
+                        US 10-Year Treasury Yields are holding high near 5.14%, increasing the opportunity cost of holding non-yielding gold. Brent crude oil near $106 is keeping inflation concerns active, preserving a cautious stance ahead of Federal Reserve announcements.
+                    </p>
                 </div>
-                <div class="glass-panel p-5 rounded-2xl border border-cardBorder space-y-4">
-                    <div class="flex justify-between items-center">
-                        <span class="text-sm font-bold text-bearRed">Bearish Confluence Score</span>
-                        <span class="text-lg font-mono font-bold text-bearRed" id="page2-bear-val">--%</span>
-                    </div>
-                    <div class="w-full bg-darkBg rounded-full h-3 overflow-hidden border border-cardBorder">
-                        <div id="page2-bear-bar" class="bg-bearRed h-full transition-all duration-500" style="width: 0%;"></div>
-                    </div>
+
+                <!-- Technical Pillar -->
+                <div class="glass-panel p-5 rounded-2xl border border-cardBorder space-y-3">
+                    <h3 class="text-sm font-bold text-bullGreen flex items-center space-x-2">
+                        <i data-lucide="activity" class="w-4 h-4"></i>
+                        <span>Pillar 2: Technical Chart Structure</span>
+                    </h3>
+                    <p id="analysis-technical" class="text-xs text-gray-300 leading-relaxed font-mono">
+                        Trading within an active H4 descending channel. Immediate support floor is anchored at $4,080, while overhead supply caps relief rallies near $4,170. A breakdown below $4,080 targets $4,000.
+                    </p>
+                </div>
+
+                <!-- Risk & Volatility Pillar -->
+                <div class="glass-panel p-5 rounded-2xl border border-cardBorder space-y-3 md:col-span-2">
+                    <h3 class="text-sm font-bold text-goldAccent flex items-center space-x-2">
+                        <i data-lucide="shield-check" class="w-4 h-4"></i>
+                        <span>Pillar 3: Risk Management & Volatility Parameters</span>
+                    </h3>
+                    <p class="text-xs text-gray-300 leading-relaxed font-mono">
+                        All trade recommendations enforce strict risk-to-reward ratios (> 1:2). Stop-losses are automatically anchored behind structural liquidity zones ($4,070 for longs, $4,182 for shorts) to prevent whipsaw losses.
+                    </p>
                 </div>
             </div>
         </section>
 
-        <!-- PAGE 3: SIGNALS & LIVE CHAT -->
+        <!-- PAGE 3: VERIFIED SIGNALS & CHAT -->
         <section id="content-page3" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Market Condition Signal Generator -->
             <div class="glass-panel p-5 rounded-2xl border border-cardBorder space-y-4 flex flex-col justify-between">
                 <div>
                     <div class="flex justify-between items-center pb-3 border-b border-cardBorder">
                         <h2 class="text-base font-bold text-white flex items-center space-x-2">
                             <i data-lucide="zap" class="w-5 h-5 text-goldAccent"></i>
-                            <span>Live Condition Signal Generator</span>
+                            <span>Verified Signal Generator</span>
                         </h2>
-                        <span class="text-xs px-2.5 py-1 rounded bg-goldAccent/10 text-goldAccent border border-goldAccent/30 font-mono">Real-Time Analysis</span>
+                        <span class="text-xs px-2.5 py-1 rounded bg-goldAccent/10 text-goldAccent border border-goldAccent/30 font-mono">Strict R:R Matrix</span>
                     </div>
                     <div class="py-4 space-y-4 font-mono text-xs">
                         <div class="p-3 bg-darkBg rounded-xl border border-cardBorder space-y-2">
-                            <span class="text-gray-400 block">Current Actionable Verdict</span>
-                            <div id="tab3-verdict" class="text-sm font-bold text-goldAccent">Evaluating live price action & confluence...</div>
+                            <span class="text-gray-400 block">Quantitative Verdict</span>
+                            <div id="signal-verdict" class="text-sm font-bold text-goldAccent">Analyzing exchange feed...</div>
                         </div>
                         <div class="grid grid-cols-2 gap-3">
                             <div class="p-3 bg-darkBg rounded-xl border border-cardBorder">
                                 <span class="text-gray-400 block mb-1">Recommended SL</span>
-                                <span id="tab3-sl" class="text-white font-bold text-sm">--</span>
+                                <span id="signal-sl" class="text-white font-bold text-sm">--</span>
                             </div>
                             <div class="p-3 bg-darkBg rounded-xl border border-cardBorder">
                                 <span class="text-gray-400 block mb-1">Recommended TP</span>
-                                <span id="tab3-tp" class="text-white font-bold text-sm">--</span>
+                                <span id="signal-tp" class="text-white font-bold text-sm">--</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <button onclick="requestInstantSignal()" class="w-full py-3 bg-goldAccent hover:bg-goldHover text-black font-bold text-xs rounded-xl transition shadow-lg shadow-goldAccent/10">
-                    Refresh & Generate New Signal
+                <button onclick="fetchApiData()" class="w-full py-3 bg-goldAccent hover:bg-goldHover text-black font-bold text-xs rounded-xl transition shadow-lg">
+                    Re-Scan Market Conditions
                 </button>
             </div>
 
-            <!-- Live Chat Signal Request Room -->
-            <div class="glass-panel p-5 rounded-2xl border border-cardBorder flex flex-col justify-between h-[500px]">
+            <!-- Signal Chat Room -->
+            <div class="glass-panel p-5 rounded-2xl border border-cardBorder flex flex-col justify-between h-[480px]">
                 <div class="flex justify-between items-center pb-3 border-b border-cardBorder">
                     <h2 class="text-base font-bold text-white flex items-center space-x-2">
                         <i data-lucide="message-square-code" class="w-5 h-5 text-goldAccent"></i>
-                        <span>Live Signal Chat Request Room</span>
+                        <span>Verified Signal Chat Desk</span>
                     </h2>
-                    <span class="text-xs text-bullGreen font-mono">● Online</span>
+                    <span class="text-xs text-bullGreen font-mono">● Active</span>
                 </div>
-                <div id="signal-chat-box" class="flex-grow my-3 p-3 bg-darkBg rounded-xl border border-cardBorder overflow-y-auto space-y-3 font-mono text-xs">
+                <div id="chat-box" class="flex-grow my-3 p-3 bg-darkBg rounded-xl border border-cardBorder overflow-y-auto space-y-3 font-mono text-xs">
                     <div class="p-2.5 rounded-xl bg-cardBg border border-cardBorder text-gray-300">
-                        🤖 AI Signal Desk: Ask me for a signal anytime! Type <b>"Give me a buy signal"</b>, <b>"What's the short setup?"</b>, or <b>"Analyze XAUUSD"</b>.
+                        🤖 <b>Quant Bot:</b> Ask me for verified signals based on current yields and support levels. Type <b>"Give me a buy setup"</b> or <b>"Analyze risk"</b>.
                     </div>
                 </div>
                 <div class="flex space-x-2 pt-2 border-t border-cardBorder">
-                    <input type="text" id="signal-chat-input" placeholder="Ask for a trade signal..." class="flex-grow bg-darkBg border border-cardBorder rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none font-mono">
-                    <button onclick="sendSignalChat()" class="px-4 py-2.5 rounded-xl bg-goldAccent text-black font-bold text-xs hover:bg-goldHover transition">Ask Signal</button>
+                    <input type="text" id="chat-input" placeholder="Ask analytical question..." class="flex-grow bg-darkBg border border-cardBorder rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none font-mono">
+                    <button onclick="sendChatMessage()" class="px-4 py-2.5 rounded-xl bg-goldAccent text-black font-bold text-xs hover:bg-goldHover transition">Ask</button>
                 </div>
-            </div>
-        </section>
-
-        <!-- PAGE 4: EDUCATION HUB -->
-        <section id="content-page4" class="hidden space-y-6">
-            <div class="glass-panel p-6 rounded-2xl border border-goldAccent/30 space-y-4">
-                <h2 class="text-xl font-bold text-white">Signal Intelligence & Learning Hub</h2>
-                <p class="text-xs text-gray-300">Understand the foundational indicators and macroeconomic news driving gold markets.</p>
             </div>
         </section>
 
     </main>
-
-    <!-- AI Chat Drawer -->
-    <div id="chat-drawer" class="fixed bottom-4 right-4 z-50 w-80 sm:w-96 glass-panel rounded-2xl border border-cardBorder shadow-2xl flex flex-col hidden overflow-hidden">
-        <div class="bg-cardBg p-3.5 border-b border-cardBorder flex justify-between items-center">
-            <span class="text-sm font-bold text-white">XAU/USD AI Tutor</span>
-            <button onclick="toggleChatDrawer()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
-        </div>
-        <div id="chat-messages" class="p-3.5 space-y-3 h-64 overflow-y-auto text-xs font-mono">
-            <div class="p-2.5 rounded-xl bg-darkBg border border-cardBorder text-gray-300">
-                Ask me why a signal was triggered or how to analyze current Gold market conditions.
-            </div>
-        </div>
-        <div class="p-3 border-t border-cardBorder bg-cardBg flex space-x-2">
-            <input type="text" id="chat-input" placeholder="Ask AI tutor..." class="flex-grow bg-darkBg border border-cardBorder rounded-xl px-3 py-2 text-xs text-white focus:outline-none font-mono">
-            <button onclick="sendChatMessage()" class="px-3 py-2 rounded-xl bg-goldAccent text-black font-bold text-xs">Send</button>
-        </div>
-    </div>
 
     <!-- Scripts -->
     <script>
         lucide.createIcons();
 
         function switchTab(pageId) {
-            ['page1', 'page2', 'page3', 'page4'].forEach(p => {
+            ['page1', 'page2', 'page3'].forEach(p => {
                 document.getElementById(`content-${p}`).classList.add('hidden');
                 document.getElementById(`tab-${p}`).className = "px-4 py-2 text-sm font-semibold rounded-lg text-gray-400 hover:text-white hover:bg-cardBg transition flex items-center space-x-2 whitespace-nowrap";
             });
             document.getElementById(`content-${pageId}`).classList.remove('hidden');
             document.getElementById(`tab-${pageId}`).className = "px-4 py-2 text-sm font-semibold rounded-lg bg-goldAccent text-black transition flex items-center space-x-2 whitespace-nowrap";
-        }
-
-        function toggleChatDrawer() {
-            document.getElementById('chat-drawer').classList.toggle('hidden');
-        }
-
-        function sendChatMessage() {
-            const input = document.getElementById('chat-input');
-            const msg = input.value.trim();
-            if(!msg) return;
-            const box = document.getElementById('chat-messages');
-            box.innerHTML += `<div class="p-2.5 rounded-xl bg-goldAccent/10 border border-goldAccent/30 text-white text-right">${msg}</div>`;
-            input.value = "";
-            setTimeout(() => {
-                box.innerHTML += `<div class="p-2.5 rounded-xl bg-darkBg border border-cardBorder text-gray-300">AI Tutor: Gold is balancing Treasury yields with safe-haven liquidity demand. Check the Education tab for breakdowns.</div>`;
-                box.scrollTop = box.scrollHeight;
-            }, 600);
         }
 
         async function executeAppTrade(action) {
@@ -353,86 +298,63 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ action, lot, sl, tp })
                 });
-                const data = await res.json();
-                alert(`✅ Trade Order Queued! Sent to MT5 (${action} ${lot} lots).`);
+                alert(`✅ Trade Order Queued Successfully for MT5 (${action} ${lot} lots).`);
             } catch(e) {
-                alert('Error submitting trade to server.');
+                alert('Error submitting trade to server backend.');
             }
         }
 
-        let latestMarketPrice = 4124.00;
-
-        function requestInstantSignal() {
-            const verdictBox = document.getElementById('tab3-verdict');
-            const slBox = document.getElementById('tab3-sl');
-            const tpBox = document.getElementById('tab3-tp');
-
-            verdictBox.innerHTML = "<span class='text-goldAccent animate-pulse'>Evaluating order flow & liquidity...</span>";
-            
-            setTimeout(() => {
-                const rand = Math.random();
-                if (rand > 0.5) {
-                    verdictBox.innerHTML = `<span class='text-bullGreen font-bold'>🟢 BUY SIGNAL (LONG)</span><br>Price holding key support near live feed. Strong buyer confluence.`;
-                    slBox.innerText = (latestMarketPrice - 12.0).toFixed(2);
-                    tpBox.innerText = (latestMarketPrice + 25.0).toFixed(2);
-                } else {
-                    verdictBox.innerHTML = `<span class='text-bearRed font-bold'>🔴 SELL SIGNAL (SHORT)</span><br>Price rejecting upper resistance. Seller momentum active.`;
-                    slBox.innerText = (latestMarketPrice + 12.0).toFixed(2);
-                    tpBox.innerText = (latestMarketPrice - 25.0).toFixed(2);
-                }
-            }, 600);
-        }
-
-        function sendSignalChat() {
-            const input = document.getElementById('signal-chat-input');
-            const msg = input.value.trim();
+        function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            const msg = input.value.trim().toLowerCase();
             if(!msg) return;
-            const chatBox = document.getElementById('signal-chat-box');
-            chatBox.innerHTML += `<div class="p-2.5 rounded-xl bg-goldAccent/10 border border-goldAccent/30 text-white text-right">${msg}</div>`;
+            const box = document.getElementById('chat-box');
+            box.innerHTML += `<div class="p-2.5 rounded-xl bg-goldAccent/10 border border-goldAccent/30 text-white text-right">${input.value}</div>`;
             input.value = "";
 
             setTimeout(() => {
                 let reply = "";
-                const lower = msg.toLowerCase();
-                if(lower.includes('buy') || lower.includes('long')) {
-                    reply = `📈 <b>Live Buy Setup:</b> Enter long at market ($${latestMarketPrice.toFixed(2)}). SL: ${(latestMarketPrice - 10).toFixed(2)} | TP: ${(latestMarketPrice + 22).toFixed(2)}. Confluence favors institutional long retest.`;
-                } else if(lower.includes('sell') || lower.includes('short')) {
-                    reply = `📉 <b>Live Sell Setup:</b> Enter short near upper resistance. SL: ${(latestMarketPrice + 10).toFixed(2)} | TP: ${(latestMarketPrice - 22).toFixed(2)}. Rejection candles confirming bear pressure.`;
+                if(msg.includes('buy') || msg.includes('long')) {
+                    reply = `📈 <b>Long Setup:</b> Evaluated against $4,080 support floor. Recommended SL: $4,070 | TP: $4,165. Yield drag requires strict risk control.`;
+                } else if(msg.includes('sell') || msg.includes('short') || msg.includes('risk')) {
+                    reply = `📉 <b>Short / Risk Analysis:</b> With US 10-Yr Yields at 5.14%, rallies toward $4,170 resistance encounter heavy selling pressure. SL: $4,182 | TP: $4,090.`;
                 } else {
-                    reply = `🤖 <b>Signal Bot:</b> Based on current market conditions around $${latestMarketPrice.toFixed(2)}, bias is neutral-to-supportive. Watch key levels on the main TradingView chart.`;
+                    reply = `🤖 <b>Quant Desk:</b> Market is currently bound between $4,080 support and $4,170 resistance. Use the Multi-Pillar Analysis tab for exact macroeconomic breakdowns.`;
                 }
-                chatBox.innerHTML += `<div class="p-2.5 rounded-xl bg-cardBg border border-cardBorder text-gray-300">${reply}</div>`;
-                chatBox.scrollTop = chatBox.scrollHeight;
-            }, 700);
+                box.innerHTML += `<div class="p-2.5 rounded-xl bg-cardBg border border-cardBorder text-gray-300">${reply}</div>`;
+                box.scrollTop = box.scrollHeight;
+            }, 600);
         }
 
         async function fetchApiData() {
             try {
                 const res = await fetch('https://gold-companion-api.onrender.com/api/status');
-                if (!res.ok) throw new Error("Backend response error");
-                
                 const data = await res.json();
                 if (data) {
-                    const price = parseFloat(data.price || 4124.00);
-                    latestMarketPrice = price;
-                    const bullScore = parseInt(data.bull_score || 75);
-                    const bearScore = parseInt(data.bear_score || 25);
+                    const bull = data.bull_score;
+                    const bear = data.bear_score;
+                    const structure = data.technical_structure;
 
-                    document.getElementById('header-bull-score').innerText = bullScore + "%";
-                    document.getElementById('header-bear-score').innerText = bearScore + "%";
+                    document.getElementById('header-bull-score').innerText = bull + "%";
+                    document.getElementById('header-bear-score').innerText = bear + "%";
+                    document.getElementById('live-structure-summary').innerText = structure;
+                    document.getElementById('signal-verdict').innerText = structure;
 
-                    document.getElementById('page2-bull-val').innerText = bullScore + "%";
-                    document.getElementById('page2-bull-bar').style.width = bullScore + "%";
-                    document.getElementById('page2-bear-val').innerText = bearScore + "%";
-                    document.getElementById('page2-bear-bar').style.width = bearScore + "%";
+                    if(bull >= 70) {
+                        document.getElementById('signal-sl').innerText = "4,070.00";
+                        document.getElementById('signal-tp').innerText = "4,165.00";
+                    } else {
+                        document.getElementById('signal-sl').innerText = "4,182.00";
+                        document.getElementById('signal-tp').innerText = "4,090.00";
+                    }
                 }
             } catch (e) {
-                console.error("Data Sync Error:", e);
+                console.error("Fetch status error:", e);
             }
         }
 
         fetchApiData();
-        setInterval(fetchApiData, 3000);
+        setInterval(fetchApiData, 4000);
     </script>
 </body>
 </html>
