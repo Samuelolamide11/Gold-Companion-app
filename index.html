@@ -25,6 +25,7 @@
                         goldHover: '#e2b13c',
                         bullGreen: '#00c087',
                         bearRed: '#f6465d',
+                        telegramBlue: '#229ED9'
                     },
                     fontFamily: {
                         mono: ['JetBrains Mono', 'Courier New', 'monospace'],
@@ -169,13 +170,22 @@
                     </div>
                 </div>
 
-                <!-- Analysis Summary Box -->
-                <div class="glass-panel p-5 rounded-2xl border border-cardBorder space-y-3">
-                    <h3 class="text-sm font-bold text-white flex items-center space-x-2">
-                        <i data-lucide="shield-alert" class="w-4 h-4 text-goldAccent"></i>
-                        <span>Quantitative Status</span>
-                    </h3>
-                    <p id="live-structure-summary" class="text-xs text-gray-300 font-mono">Evaluating live chart data...</p>
+                <!-- Analysis Summary & Push To Telegram Box -->
+                <div class="glass-panel p-5 rounded-2xl border border-cardBorder space-y-4">
+                    <div class="flex justify-between items-center pb-2 border-b border-cardBorder">
+                        <h3 class="text-sm font-bold text-white flex items-center space-x-2">
+                            <i data-lucide="shield-alert" class="w-4 h-4 text-goldAccent"></i>
+                            <span>Live Signal Status</span>
+                        </h3>
+                        <span id="signal-badge" class="text-[10px] bg-goldAccent/10 text-goldAccent px-2 py-0.5 rounded font-mono border border-goldAccent/30">Active</span>
+                    </div>
+                    <p id="live-structure-summary" class="text-xs text-gray-300 font-mono leading-relaxed">Evaluating live chart data...</p>
+
+                    <!-- PUSH TO TELEGRAM BUTTON -->
+                    <button onclick="pushSignalToTelegram()" id="btn-push-telegram" class="w-full py-2.5 bg-[#229ED9] hover:bg-[#1d8bbd] text-white font-bold text-xs rounded-xl transition flex items-center justify-center space-x-2 shadow-lg">
+                        <i data-lucide="send" class="w-4 h-4"></i>
+                        <span>Push Signal to Telegram</span>
+                    </button>
                 </div>
             </div>
         </section>
@@ -183,36 +193,33 @@
         <!-- PAGE 2: MULTI-PILLAR ANALYSIS -->
         <section id="content-page2" class="hidden space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Fundamental Pillar -->
                 <div class="glass-panel p-5 rounded-2xl border border-cardBorder space-y-3">
                     <h3 class="text-sm font-bold text-goldAccent flex items-center space-x-2">
                         <i data-lucide="globe" class="w-4 h-4"></i>
                         <span>Pillar 1: Fundamental & Macro Drivers</span>
                     </h3>
-                    <p id="analysis-fundamental" class="text-xs text-gray-300 leading-relaxed font-mono">
-                        US 10-Year Treasury Yields are holding high near 5.14%, increasing the opportunity cost of holding non-yielding gold. Brent crude oil near $106 is keeping inflation concerns active, preserving a cautious stance ahead of Federal Reserve announcements.
+                    <p class="text-xs text-gray-300 leading-relaxed font-mono">
+                        US 10-Year Treasury Yields are holding high near 5.14%, increasing the opportunity cost of holding non-yielding gold. Brent crude oil near $106 is keeping inflation concerns active.
                     </p>
                 </div>
 
-                <!-- Technical Pillar -->
                 <div class="glass-panel p-5 rounded-2xl border border-cardBorder space-y-3">
                     <h3 class="text-sm font-bold text-bullGreen flex items-center space-x-2">
                         <i data-lucide="activity" class="w-4 h-4"></i>
                         <span>Pillar 2: Technical Chart Structure</span>
                     </h3>
-                    <p id="analysis-technical" class="text-xs text-gray-300 leading-relaxed font-mono">
-                        Trading within an active H4 descending channel. Immediate support floor is anchored at $4,080, while overhead supply caps relief rallies near $4,170. A breakdown below $4,080 targets $4,000.
+                    <p class="text-xs text-gray-300 leading-relaxed font-mono">
+                        Trading within an active H4 channel. Immediate support floor is anchored at $4,080, while overhead supply caps relief rallies near $4,170.
                     </p>
                 </div>
 
-                <!-- Risk & Volatility Pillar -->
                 <div class="glass-panel p-5 rounded-2xl border border-cardBorder space-y-3 md:col-span-2">
                     <h3 class="text-sm font-bold text-goldAccent flex items-center space-x-2">
                         <i data-lucide="shield-check" class="w-4 h-4"></i>
                         <span>Pillar 3: Risk Management & Volatility Parameters</span>
                     </h3>
                     <p class="text-xs text-gray-300 leading-relaxed font-mono">
-                        All trade recommendations enforce strict risk-to-reward ratios (> 1:2). Stop-losses are automatically anchored behind structural liquidity zones ($4,070 for longs, $4,182 for shorts) to prevent whipsaw losses.
+                        All trade recommendations enforce strict risk-to-reward ratios (> 1:2). Stop-losses are automatically anchored behind structural liquidity zones ($4,070 for longs, $4,182 for shorts).
                     </p>
                 </div>
             </div>
@@ -246,9 +253,16 @@
                         </div>
                     </div>
                 </div>
-                <button onclick="fetchApiData()" class="w-full py-3 bg-goldAccent hover:bg-goldHover text-black font-bold text-xs rounded-xl transition shadow-lg">
-                    Re-Scan Market Conditions
-                </button>
+                
+                <div class="space-y-2">
+                    <button onclick="pushSignalToTelegram()" class="w-full py-3 bg-[#229ED9] hover:bg-[#1d8bbd] text-white font-bold text-xs rounded-xl transition shadow-lg flex items-center justify-center space-x-2">
+                        <i data-lucide="send" class="w-4 h-4"></i>
+                        <span>Push This Signal to Telegram</span>
+                    </button>
+                    <button onclick="fetchApiData()" class="w-full py-2 bg-darkBg hover:bg-cardBg text-gray-300 font-bold text-xs rounded-xl transition border border-cardBorder">
+                        Re-Scan Market Conditions
+                    </button>
+                </div>
             </div>
 
             <!-- Signal Chat Room -->
@@ -301,6 +315,36 @@
                 alert(`✅ Trade Order Queued Successfully for MT5 (${action} ${lot} lots).`);
             } catch(e) {
                 alert('Error submitting trade to server backend.');
+            }
+        }
+
+        async function pushSignalToTelegram() {
+            const btn = document.getElementById('btn-push-telegram');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<span>Sending...</span>`;
+            btn.disabled = true;
+
+            const verdict = document.getElementById('signal-verdict').innerText;
+            const sl = document.getElementById('signal-sl').innerText;
+            const tp = document.getElementById('signal-tp').innerText;
+
+            try {
+                const res = await fetch('https://gold-companion-api.onrender.com/api/send-signal-telegram', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ verdict, sl, tp })
+                });
+                const data = await res.json();
+                if(res.ok) {
+                    alert('🚀 Signal pushed to Telegram channel successfully!');
+                } else {
+                    alert('Failed to send: ' + data.message);
+                }
+            } catch(e) {
+                alert('Connection error pushing signal to Telegram.');
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
             }
         }
 
